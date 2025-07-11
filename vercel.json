@@ -10,26 +10,26 @@
       "use": "@vercel/static"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     },
     {
-      "src": "/login",
-      "dest": "/frontend/login.html"
+      "source": "/login",
+      "destination": "/frontend/login.html"
     },
     {
-      "src": "/styles.css", 
-      "dest": "/frontend/styles.css"
+      "source": "/styles.css", 
+      "destination": "/frontend/styles.css"
     },
     {
-      "src": "/",
-      "dest": "/frontend/index.html"
+      "source": "/",
+      "destination": "/frontend/index.html"
     },
     {
-      "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
     }
   ],
   "headers": [
