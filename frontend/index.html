@@ -311,7 +311,7 @@
     </div>
 
     <script>
-        // API Configuration
+        // API Configuration with health check
         const API_CONFIG = {
             baseUrl: '', // Use relative URLs for Vercel
             endpoints: {
@@ -319,9 +319,26 @@
                 logout: '/api/auth/logout',
                 repos: '/api/github/repos',
                 branches: '/api/github/repos',
-                createPR: '/api/github/repos'
+                createPR: '/api/github/repos',
+                config: '/api/config',
+                health: '/api/health'
             }
         };
+
+        // Health check function
+        async function checkAPIHealth() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.health}`);
+                if (response.ok) {
+                    const health = await response.json();
+                    console.log('API Health Check:', health);
+                    return health;
+                }
+            } catch (error) {
+                console.error('API Health Check Failed:', error);
+                return null;
+            }
+        }
 
         // Application State Management
         class AppState {
@@ -520,8 +537,17 @@
 
             async checkAuth() {
                 try {
+                    // First check API health
+                    const health = await checkAPIHealth();
+                    if (!health) {
+                        console.warn('API health check failed, but attempting auth anyway...');
+                    }
+
                     const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.auth}`, {
-                        credentials: 'include'
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
                     });
 
                     if (response.ok) {
@@ -534,11 +560,24 @@
                         if (this.appState.currentTab === 'github') {
                             window.githubManager?.loadRepositories();
                         }
+                    } else if (response.status === 401) {
+                        console.log('User not authenticated, redirecting to login');
+                        this.redirectToLogin();
                     } else {
+                        console.error('Auth check failed with status:', response.status);
+                        Utils.showToast('Authentication check failed. Please try logging in again.', 'error');
                         this.redirectToLogin();
                     }
                 } catch (error) {
                     console.error('Auth check failed:', error);
+                    
+                    // Show more helpful error message
+                    if (error.message.includes('fetch')) {
+                        Utils.showToast('Unable to connect to server. Please check your connection and try again.', 'error');
+                    } else {
+                        Utils.showToast('Authentication failed. Please try logging in again.', 'error');
+                    }
+                    
                     this.redirectToLogin();
                 }
             }

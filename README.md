@@ -307,3 +307,59 @@ For support, please:
 ---
 
 Made with ❤️ by the Tekshila Team
+
+## 🔧 Troubleshooting
+
+### "Configuration not loaded. Please refresh the page."
+
+This error occurs when the application cannot load the GitHub OAuth configuration. Here's how to fix it:
+
+#### 1. **Check Environment Variables**
+Ensure these variables are set in your Vercel deployment:
+- `GITHUB_CLIENT_ID` - Your GitHub OAuth app client ID
+- `GITHUB_CLIENT_SECRET` - Your GitHub OAuth app client secret
+
+#### 2. **Verify GitHub OAuth App Setup**
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Check your OAuth app configuration:
+   - Homepage URL: `https://your-domain.vercel.app`
+   - Callback URL: `https://your-domain.vercel.app/api/auth/github/callback`
+
+#### 3. **Test API Endpoints**
+Check if your API is working:
+- Health Check: `https://your-domain.vercel.app/api/health`
+- Configuration: `https://your-domain.vercel.app/api/config`
+
+#### 4. **Run Diagnostics**
+Use our diagnostic script:
+```bash
+./diagnose.sh
+```
+
+#### 5. **Force Redeploy**
+If environment variables were recently added:
+```bash
+# Trigger a new deployment
+echo "$(date)" > deployment-trigger.txt
+git add deployment-trigger.txt
+git commit -m "Force redeploy for environment variables"
+git push
+```
+
+For detailed setup instructions, see [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md).
+
+### Other Common Issues
+
+#### **"Unable to connect to server"**
+- Check your internet connection
+- Verify the Vercel deployment is active
+- Check Vercel function logs for errors
+
+#### **"GitHub OAuth is not configured"**
+- Verify `GITHUB_CLIENT_ID` is set in Vercel environment variables
+- Ensure the GitHub OAuth app exists and is configured correctly
+- Check that the client ID matches between GitHub and Vercel
+
+#### **API requests failing with CORS errors**
+- This should be automatically handled by our configuration
+- If issues persist, check the browser network tab for specific error details

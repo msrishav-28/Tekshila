@@ -393,13 +393,25 @@
         // Load configuration from API
         async function loadConfig() {
             try {
-                const response = await fetch('/api/config');
+                console.log('Loading configuration from /api/config...');
+                
+                const response = await fetch('/api/config', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    },
+                    cache: 'no-cache'
+                });
+                
+                console.log('Config response status:', response.status);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
                 
                 const config = await response.json();
+                console.log('Config loaded:', config);
                 
                 // Check if we got an error response
                 if (config.error) {
@@ -408,7 +420,8 @@
                 
                 // Check if we have the required configuration
                 if (!config.github_client_id) {
-                    throw new Error('GitHub Client ID is not configured. Please check your environment variables.');
+                    const missingVars = config.missing_variables || ['GITHUB_CLIENT_ID'];
+                    throw new Error(`GitHub OAuth is not configured. Missing: ${missingVars.join(', ')}`);
                 }
                 
                 GITHUB_CLIENT_ID = config.github_client_id;
@@ -416,6 +429,7 @@
                 
                 // Enable login button once config is loaded
                 document.getElementById('githubLoginBtn').disabled = false;
+                document.getElementById('githubLoginBtn').textContent = 'Continue with GitHub';
                 
                 // Hide any previous error messages
                 errorMessage.style.display = 'none';
@@ -428,10 +442,12 @@
                 // Show specific error message
                 let errorMsg = 'Failed to load application configuration. ';
                 
-                if (error.message.includes('GitHub Client ID')) {
-                    errorMsg += 'GitHub OAuth is not configured. Please contact the administrator.';
-                } else if (error.message.includes('fetch')) {
-                    errorMsg += 'Unable to connect to the server. Please check your internet connection.';
+                if (error.message.includes('GitHub OAuth') || error.message.includes('Missing:')) {
+                    errorMsg = error.message + '\n\nPlease contact the administrator to configure the environment variables.';
+                } else if (error.message.includes('Failed to fetch') || error.message.includes('HTTP 500')) {
+                    errorMsg += 'Server is not responding. Please try again later or contact support.';
+                } else if (error.message.includes('HTTP 404')) {
+                    errorMsg += 'Configuration endpoint not found. The application may need to be redeployed.';
                 } else {
                     errorMsg += error.message;
                 }
@@ -439,8 +455,24 @@
                 errorMessage.textContent = errorMsg;
                 errorMessage.style.display = 'block';
                 
-                // Keep login button disabled
-                document.getElementById('githubLoginBtn').disabled = true;
+                // Keep login button disabled but show retry option
+                const loginBtn = document.getElementById('githubLoginBtn');
+                loginBtn.disabled = true;
+                loginBtn.textContent = 'Configuration Error';
+                
+                // Add retry button
+                if (!document.getElementById('retryConfigBtn')) {
+                    const retryBtn = document.createElement('button');
+                    retryBtn.id = 'retryConfigBtn';
+                    retryBtn.className = 'btn btn-secondary';
+                    retryBtn.style.marginTop = '10px';
+                    retryBtn.textContent = 'Retry Configuration';
+                    retryBtn.onclick = () => {
+                        retryBtn.remove();
+                        loadConfig();
+                    };
+                    loginBtn.parentNode.appendChild(retryBtn);
+                }
             }
         }
 
@@ -449,13 +481,14 @@
             
             // Ensure configuration is loaded
             if (!GITHUB_CLIENT_ID) {
-                errorMessage.textContent = 'Configuration not loaded. Please refresh the page.';
+                errorMessage.textContent = 'Configuration not loaded. Please refresh the page or click "Retry Configuration" above.';
                 errorMessage.style.display = 'block';
                 return;
             }
             
             // Add loading state
             githubLoginBtn.classList.add('loading');
+            githubLoginBtn.textContent = 'Redirecting to GitHub...';
             
             // Hide any previous errors
             errorMessage.style.display = 'none';
@@ -580,7 +613,9 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             // Disable login button until config is loaded
-            document.getElementById('githubLoginBtn').disabled = true;
+            const loginBtn = document.getElementById('githubLoginBtn');
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Loading Configuration...';
             
             // Load configuration
             loadConfig();

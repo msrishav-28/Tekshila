@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime
 from http.server import BaseHTTPRequestHandler
 
 class handler(BaseHTTPRequestHandler):
@@ -15,16 +16,37 @@ class handler(BaseHTTPRequestHandler):
             
             # Get environment variables
             github_client_id = os.getenv('GITHUB_CLIENT_ID', '')
-            app_url = os.getenv('VERCEL_URL', 'http://localhost:3000')
+            github_client_secret = os.getenv('GITHUB_CLIENT_SECRET', '')
+            app_url = os.getenv('VERCEL_URL')
             
-            # Return public configuration
+            # If VERCEL_URL is not set, try to construct from request
+            if not app_url:
+                host = self.headers.get('host', 'localhost:3000')
+                protocol = 'https' if 'vercel.app' in host or 'herokuapp.com' in host else 'http'
+                app_url = f"{protocol}://{host}"
+            
+            # Validate required environment variables
+            missing_vars = []
+            if not github_client_id:
+                missing_vars.append('GITHUB_CLIENT_ID')
+            if not github_client_secret:
+                missing_vars.append('GITHUB_CLIENT_SECRET')
+            
+            # Return configuration
             config = {
                 'github_client_id': github_client_id,
                 'app_url': app_url,
-                'status': 'ok' if github_client_id else 'missing_config'
+                'status': 'ok' if not missing_vars else 'missing_config',
+                'missing_variables': missing_vars,
+                'environment': 'production' if 'vercel.app' in app_url else 'development',
+                'timestamp': str(datetime.utcnow().isoformat()) + 'Z'
             }
             
-            self.wfile.write(json.dumps(config).encode())
+            if missing_vars:
+                config['error'] = f"Missing required environment variables: {', '.join(missing_vars)}"
+                config['help'] = "Please configure the missing environment variables in your deployment settings."
+            
+            self.wfile.write(json.dumps(config, indent=2).encode())
             
         except Exception as e:
             # Send error response
@@ -36,9 +58,10 @@ class handler(BaseHTTPRequestHandler):
             error_response = {
                 'error': 'Internal server error',
                 'message': str(e),
-                'status': 'error'
+                'status': 'error',
+                'timestamp': str(datetime.utcnow().isoformat()) + 'Z'
             }
-            self.wfile.write(json.dumps(error_response).encode())
+            self.wfile.write(json.dumps(error_response, indent=2).encode())
     
     def do_OPTIONS(self):
         # Handle preflight requests
