@@ -1,107 +1,34 @@
 {
-  "version": 2,
   "builds": [
     {
-      "src": "api/*.py",
+      "src": "api/**/*.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "frontend/**/*",
+      "use": "@vercel/static"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/auth/(.*)",
-      "destination": "/api/auth-github"
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
     {
-      "source": "/api/github/(.*)",
-      "destination": "/api/github-repos"
+      "src": "/login",
+      "dest": "/frontend/login.html"
     },
     {
-      "source": "/api/config",
-      "destination": "/api/config"
+      "src": "/styles.css",
+      "dest": "/frontend/styles.css"
     },
     {
-      "source": "/api/test", 
-      "destination": "/api/test"
+      "src": "/",
+      "dest": "/frontend/index.html"
     },
     {
-      "source": "/api/generate-docs",
-      "destination": "/api/generate-docs"
-    },
-    {
-      "source": "/api/github-push",
-      "destination": "/api/github-push"
-    },
-    {
-      "source": "/",
-      "destination": "/frontend/index.html"
-    },
-    {
-      "source": "/login",
-      "destination": "/frontend/login.html"
-    },
-    {
-      "source": "/login.html", 
-      "destination": "/frontend/login.html"
-    },
-    {
-      "source": "/styles.css",
-      "destination": "/frontend/styles.css"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/frontend/$1"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods", 
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
-      ]
+      "src": "/(.*)",
+      "dest": "/frontend/$1"
     }
   ]
 }
