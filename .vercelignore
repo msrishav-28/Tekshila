@@ -1,27 +1,75 @@
-# Development files
+# Tekshila - Vercel Deployment Ignore
+
+# Development and documentation files
 .devcontainer/
 .git/
 .gitignore
+.github/
 deploy.sh
 setup.sh
 configure.sh
 README.md
+DEPLOY.md
 LICENSE
+*.md
 
 # Environment files (use Vercel dashboard instead)
 .env*
+config.local.py
+secrets.py
 
-# Dependencies
+# Dependencies and build artifacts
 node_modules/
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
 
-# Logs
+# Python virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs and temporary files
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.npm
+.cache/
 
-# Cache
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Vercel specific
 .vercel/
 .next/
-.cache/
+
+# Test files
+test/
+tests/
+*test.py
+*_test.py
+test_*.py
+
+# Coverage and testing
+.coverage
+.pytest_cache/
+.tox/
+htmlcov/

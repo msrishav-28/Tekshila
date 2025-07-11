@@ -1,8 +1,7 @@
 {
-  "buildCommand": "echo 'Building Tekshila...'",
   "functions": {
     "api/*.py": {
-      "runtime": "@vercel/python"
+      "runtime": "python3.9"
     }
   },
   "rewrites": [
