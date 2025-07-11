@@ -1,6 +1,7 @@
 import os
 import json
 from http.server import BaseHTTPRequestHandler
+# Updated: 2025-07-11 - Fresh deployment configuration
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
