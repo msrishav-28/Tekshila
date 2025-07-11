@@ -1,6 +1,8 @@
 {
   "functions": {
-    "api/*.py": "@vercel/python@4.6.0"
+    "api/*.py": {
+      "runtime": "@vercel/python"
+    }
   },
   "rewrites": [
     {
