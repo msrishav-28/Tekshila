@@ -5,9 +5,9 @@
   "main": "frontend/index.html",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'Static files ready'",
-    "start": "vercel dev",
-    "deploy": "vercel --prod"
+    "build": "echo 'No build required for static files'",
+    "deploy": "vercel --prod",
+    "clean": "rm -f index.html login.html styles.css theme-test.html && rm -rf backend/"
   },
   "keywords": [
     "ai",
@@ -15,15 +15,14 @@
     "code-analysis",
     "github",
     "oauth",
-    "vercel"
+    "vercel",
+    "gemini"
   ],
   "author": "Tekshila Team",
   "license": "MIT",
   "devDependencies": {
-    "@vercel/node": "^3.0.0",
     "vercel": "^32.0.0"
   },
-  "dependencies": {},
   "engines": {
     "node": ">=18.0.0"
   }

@@ -20,6 +20,12 @@ if ! vercel whoami &> /dev/null; then
     vercel login
 fi
 
+# Clean up duplicate files
+echo "🧹 Cleaning up duplicate files..."
+rm -f index.html login.html styles.css theme-test.html
+rm -rf backend/
+echo "✅ Cleanup complete"
+
 echo ""
 echo "📋 Pre-deployment Checklist:"
 echo "=============================="

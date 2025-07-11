@@ -46,10 +46,15 @@ class handler(BaseHTTPRequestHandler):
                 self.send_error(500, "GitHub Client ID not configured")
                 return
             
-            # Build OAuth URL
+            # Build OAuth URL with secure redirect
+            # Use environment variable for production URL or construct from host
+            app_url = os.getenv('VERCEL_URL', self.headers.get('host'))
+            if not app_url.startswith('http'):
+                app_url = f"https://{app_url}"
+            
             params = {
                 'client_id': client_id,
-                'redirect_uri': f"https://{self.headers.get('host')}/api/auth/github/callback",
+                'redirect_uri': f"{app_url}/api/auth/github/callback",
                 'scope': 'repo user:email read:user',  # Full repo access for push/pull
                 'state': state,
                 'allow_signup': 'true'
