@@ -1,7 +1,6 @@
 # Ignore development files
 .devcontainer/
 backend/
-frontend/
 .git/
 .gitignore
 deploy.sh

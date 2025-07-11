@@ -394,17 +394,53 @@
         async function loadConfig() {
             try {
                 const response = await fetch('/api/config');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const config = await response.json();
+                
+                // Check if we got an error response
+                if (config.error) {
+                    throw new Error(config.message || config.error);
+                }
+                
+                // Check if we have the required configuration
+                if (!config.github_client_id) {
+                    throw new Error('GitHub Client ID is not configured. Please check your environment variables.');
+                }
+                
                 GITHUB_CLIENT_ID = config.github_client_id;
                 REDIRECT_URI = encodeURIComponent(window.location.origin + '/api/auth/github/callback');
                 
                 // Enable login button once config is loaded
                 document.getElementById('githubLoginBtn').disabled = false;
+                
+                // Hide any previous error messages
+                errorMessage.style.display = 'none';
+                
+                console.log('Configuration loaded successfully');
+                
             } catch (error) {
                 console.error('Failed to load configuration:', error);
-                // Show error message
-                errorMessage.textContent = 'Failed to load application configuration. Please refresh the page.';
+                
+                // Show specific error message
+                let errorMsg = 'Failed to load application configuration. ';
+                
+                if (error.message.includes('GitHub Client ID')) {
+                    errorMsg += 'GitHub OAuth is not configured. Please contact the administrator.';
+                } else if (error.message.includes('fetch')) {
+                    errorMsg += 'Unable to connect to the server. Please check your internet connection.';
+                } else {
+                    errorMsg += error.message;
+                }
+                
+                errorMessage.textContent = errorMsg;
                 errorMessage.style.display = 'block';
+                
+                // Keep login button disabled
+                document.getElementById('githubLoginBtn').disabled = true;
             }
         }
 
