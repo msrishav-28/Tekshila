@@ -16,8 +16,20 @@
       "destination": "/api/github-repos"
     },
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "source": "/api/config",
+      "destination": "/api/config"
+    },
+    {
+      "source": "/api/test", 
+      "destination": "/api/test"
+    },
+    {
+      "source": "/api/generate-docs",
+      "destination": "/api/generate-docs"
+    },
+    {
+      "source": "/api/github-push",
+      "destination": "/api/github-push"
     },
     {
       "source": "/",
