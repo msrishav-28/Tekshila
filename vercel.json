@@ -12,8 +12,32 @@
   ],
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "source": "/api/config",
+      "destination": "/api/config.py"
+    },
+    {
+      "source": "/api/health",
+      "destination": "/api/health.py"
+    },
+    {
+      "source": "/api/auth/user",
+      "destination": "/api/auth-github.py"
+    },
+    {
+      "source": "/api/auth/logout",
+      "destination": "/api/auth-github.py"
+    },
+    {
+      "source": "/api/auth/github/(.*)",
+      "destination": "/api/auth-github.py"
+    },
+    {
+      "source": "/api/github/(.*)",
+      "destination": "/api/github-repos.py"
+    },
+    {
+      "source": "/api/generate-docs",
+      "destination": "/api/generate-docs.py"
     },
     {
       "source": "/login",
