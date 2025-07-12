@@ -121,12 +121,29 @@ class handler(BaseHTTPRequestHandler):
             if is_production:
                 cookie_flags += '; Secure'
             
-            # Redirect to frontend with success
-            self.send_response(302)
-            self.send_header('Location', '/')
+            # Send HTML page with JS redirect after setting cookie
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html')
             self.send_header('Set-Cookie', f'auth_token={jwt_token}; {cookie_flags}')
             self.send_header('Set-Cookie', f'oauth_state=; HttpOnly; SameSite=Lax; Max-Age=0; Path=/')  # Clear state
             self.end_headers()
+            self.wfile.write(f'''
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+</head>
+<body>
+    <script>
+        // Give browser time to set cookie, then redirect
+        setTimeout(() => {{
+            window.location.href = '/';
+        }}, 100);
+    </script>
+    <p>Authentication successful. Redirecting...</p>
+</body>
+</html>
+'''.encode())
             
         except Exception as e:
             self.redirect_with_error(f"Authentication failed: {str(e)}")
