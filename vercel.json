@@ -12,27 +12,6 @@
   ],
   "rewrites": [
     {
-      "source": "/",
-      "has": [
-        {
-          "type": "cookie",
-          "key": "auth_token",
-          "value": ".+"
-        }
-      ],
-      "destination": "/main.html"
-    },
-    {
-      "source": "/",
-      "missing": [
-        {
-          "type": "cookie",
-          "key": "auth_token"
-        }
-      ],
-      "destination": "/login.html"
-    },
-    {
       "source": "/api/config",
       "destination": "/api/config.py"
     },
@@ -67,6 +46,10 @@
     {
       "source": "/styles.css", 
       "destination": "/frontend/styles.css"
+    },
+    {
+      "source": "/",
+      "destination": "/frontend/index.html"
     },
     {
       "source": "/(.*)",

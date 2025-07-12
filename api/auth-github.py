@@ -112,11 +112,20 @@ class handler(BaseHTTPRequestHandler):
                 'exp': datetime.utcnow() + timedelta(hours=24)
             })
             
+            # Determine if we're in production (HTTPS) or development
+            host = self.headers.get('host', '')
+            is_production = 'vercel.app' in host or 'herokuapp.com' in host
+            
+            # Set cookie with appropriate security settings
+            cookie_flags = 'HttpOnly; SameSite=Lax; Max-Age=86400; Path=/'
+            if is_production:
+                cookie_flags += '; Secure'
+            
             # Redirect to frontend with success
             self.send_response(302)
-            self.send_header('Location', '/?auth=success')
-            self.send_header('Set-Cookie', f'auth_token={jwt_token}; HttpOnly; Secure; SameSite=Lax; Max-Age=86400')
-            self.send_header('Set-Cookie', 'oauth_state=; HttpOnly; Secure; SameSite=Lax; Max-Age=0')  # Clear state
+            self.send_header('Location', '/frontend/index.html')
+            self.send_header('Set-Cookie', f'auth_token={jwt_token}; {cookie_flags}')
+            self.send_header('Set-Cookie', f'oauth_state=; HttpOnly; SameSite=Lax; Max-Age=0; Path=/')  # Clear state
             self.end_headers()
             
         except Exception as e:
@@ -148,9 +157,16 @@ class handler(BaseHTTPRequestHandler):
                 })
             except:
                 # Token expired, clear cookie
+                host = self.headers.get('host', '')
+                is_production = 'vercel.app' in host or 'herokuapp.com' in host
+                
+                cookie_flags = 'HttpOnly; SameSite=Lax; Max-Age=0; Path=/'
+                if is_production:
+                    cookie_flags += '; Secure'
+                    
                 self.send_response(401)
                 self.send_header('Content-Type', 'application/json')
-                self.send_header('Set-Cookie', 'auth_token=; HttpOnly; Secure; SameSite=Lax; Max-Age=0')
+                self.send_header('Set-Cookie', f'auth_token=; {cookie_flags}')
                 self.end_headers()
                 self.wfile.write(json.dumps({'error': 'Token expired'}).encode())
             
@@ -159,9 +175,17 @@ class handler(BaseHTTPRequestHandler):
     
     def handle_logout(self):
         """Logout user"""
+        # Determine if we're in production
+        host = self.headers.get('host', '')
+        is_production = 'vercel.app' in host or 'herokuapp.com' in host
+        
+        cookie_flags = 'HttpOnly; SameSite=Lax; Max-Age=0; Path=/'
+        if is_production:
+            cookie_flags += '; Secure'
+            
         self.send_response(200)
         self.send_header('Content-Type', 'application/json')
-        self.send_header('Set-Cookie', 'auth_token=; HttpOnly; Secure; SameSite=Lax; Max-Age=0')
+        self.send_header('Set-Cookie', f'auth_token=; {cookie_flags}')
         self.end_headers()
         self.wfile.write(json.dumps({'success': True}).encode())
     
