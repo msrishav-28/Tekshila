@@ -15,8 +15,8 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
             
             # Get environment variables
-            github_client_id = os.getenv('GITHUB_CLIENT_ID', '')
-            github_client_secret = os.getenv('GITHUB_CLIENT_SECRET', '')
+            github_client_id = os.getenv('GITHUB_CLIENT_ID')
+            github_client_secret = os.getenv('GITHUB_CLIENT_SECRET')
             app_url = os.getenv('VERCEL_URL')
             
             # If VERCEL_URL is not set, try to construct from request

@@ -6,294 +6,29 @@
     <title>Login - Tekshila</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        :root {
-            --primary-color: #2e1065;
-            --primary-dark: #1e085a;
-            --primary-light: #a78bfa;
-            --secondary-color: #0ea5e9;
-            --accent-color: #ffd700;
-            --success-color: #10b981;
-            --error-color: #ef4444;
-            
-            --gradient-main: linear-gradient(135deg, #2e1065 0%, #0ea5e9 60%, #ffd700 100%);
-            --gradient-hero: linear-gradient(120deg, #2e1065 0%, #0ea5e9 60%, #ffd700 100%);
-            
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-inverse: #ffffff;
-            
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --radius-xl: 1rem;
-            --spacing-xl: 2rem;
-            --spacing-lg: 1.5rem;
-            --spacing-md: 1rem;
-        }
-
-        [data-theme="dark"] {
-            --bg-primary: #18181b;
-            --bg-secondary: #232336;
-            --text-primary: #f4f4f5;
-            --text-secondary: #a1a1aa;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        /* Specific styles for the login page body */
+        body.login-page {
             background: var(--gradient-hero);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-primary);
             position: relative;
             overflow: hidden;
         }
 
-        body::before {
+        body.login-page::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
             opacity: 0.3;
         }
-
-        .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-xl);
-            padding: var(--spacing-xl);
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            margin: var(--spacing-lg);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--gradient-main);
-            border-radius: var(--radius-xl);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-inverse);
-            font-size: 1.5rem;
-        }
-
-        .logo-text h1 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin-bottom: 0.25rem;
-        }
-
-        .logo-text span {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .login-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-md);
-        }
-
-        .login-header p {
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-xl);
-            line-height: 1.6;
-        }
-
-        .github-login-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--spacing-md);
-            width: 100%;
-            padding: var(--spacing-lg);
-            background: #24292e;
-            color: white;
-            border: none;
-            border-radius: var(--radius-xl);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .github-login-btn:hover {
-            background: #1a1e22;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(36, 41, 46, 0.3);
-        }
-
-        .github-login-btn i {
-            font-size: 1.25rem;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: var(--spacing-lg) 0;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e2e8f0;
-        }
-
-        .divider span {
-            padding: 0 var(--spacing-md);
-        }
-
-        .features {
-            text-align: left;
-        }
-
-        .features h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-md);
-        }
-
-        .feature-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-md);
-        }
-
-        .feature-list li {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-md);
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .feature-list i {
-            color: var(--success-color);
-            width: 16px;
-        }
-
-        .security-note {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-        }
-
-        .security-note p {
-            font-size: 0.75rem;
-            color: var(--success-color);
-            margin: 0;
-            font-weight: 500;
-        }
-
-        .theme-toggle {
-            position: absolute;
-            top: var(--spacing-lg);
-            right: var(--spacing-lg);
-            width: 40px;
-            height: 40px;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        @media (max-width: 480px) {
-            .login-container {
-                margin: var(--spacing-md);
-                padding: var(--spacing-lg);
-            }
-            
-            .logo {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        /* Loading state */
-        .github-login-btn.loading {
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
-        .github-login-btn.loading::after {
-            content: '';
-            width: 16px;
-            height: 16px;
-            border: 2px solid transparent;
-            border-top: 2px solid currentColor;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: var(--spacing-md);
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: var(--error-color);
-            padding: var(--spacing-md);
-            border-radius: var(--radius-xl);
-            margin-bottom: var(--spacing-lg);
-            font-size: 0.875rem;
-            display: none;
-        }
     </style>
 </head>
-<body>
+<body class="login-page">
     <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
     </button>
@@ -310,61 +45,35 @@
         </div>
 
         <div class="login-header">
-            <h2>Welcome Back</h2>
+            <h2>Welcome</h2>
             <p>Sign in with GitHub to access your repositories and start generating intelligent documentation.</p>
         </div>
 
-        <div class="error-message" id="errorMessage"></div>
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
 
-        <a href="#" class="github-login-btn" id="githubLoginBtn">
+        <a href="/api/auth/github/login" class="github-login-btn" id="githubLoginBtn">
             <i class="fab fa-github"></i>
             <span>Continue with GitHub</span>
         </a>
 
         <div class="divider">
-            <span>What you'll get</span>
+            <span>Features</span>
         </div>
 
         <div class="features">
-            <h3>Features & Benefits</h3>
             <ul class="feature-list">
-                <li>
-                    <i class="fas fa-check-circle"></i>
-                    <span>Access to all your GitHub repositories</span>
-                </li>
-                <li>
-                    <i class="fas fa-check-circle"></i>
-                    <span>AI-powered README and code documentation</span>
-                </li>
-                <li>
-                    <i class="fas fa-check-circle"></i>
-                    <span>Automatic pull request creation</span>
-                </li>
-                <li>
-                    <i class="fas fa-check-circle"></i>
-                    <span>Code quality analysis and suggestions</span>
-                </li>
-                <li>
-                    <i class="fas fa-check-circle"></i>
-                    <span>Multi-language support (20+ languages)</span>
-                </li>
+                <li><i class="fas fa-check-circle"></i><span>Access to your GitHub repositories</span></li>
+                <li><i class="fas fa-check-circle"></i><span>AI-powered README generation</span></li>
+                <li><i class="fas fa-check-circle"></i><span>Automatic pull request creation</span></li>
+                <li><i class="fas fa-check-circle"></i><span>Code quality analysis</span></li>
             </ul>
         </div>
-
-        <div class="security-note">
-            <p><i class="fas fa-shield-alt"></i> Secure OAuth authentication - we never store your GitHub password</p>
-        </div>
+         <div class="security-note">
+             <p><i class="fas fa-shield-alt"></i> Secure GitHub OAuth2 authentication.</p>
+         </div>
     </div>
 
     <script>
-        // Check if the user is already logged in by looking for the auth_token cookie
-        const token = document.cookie.split(';').find(row => row.trim().startsWith('auth_token='));
-
-        // If the token exists, redirect to the main application page
-        if (token) {
-            window.location.href = '/';
-        }
-
         // Theme management
         const themeToggle = document.getElementById('themeToggle');
         const savedTheme = localStorage.getItem('theme') || 'light';
@@ -372,268 +81,27 @@
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
-            
             const icon = themeToggle.querySelector('i');
-            if (theme === 'dark') {
-                icon.className = 'fas fa-sun';
-            } else {
-                icon.className = 'fas fa-moon';
-            }
+            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
 
         setTheme(savedTheme);
 
         themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            const newTheme = (document.documentElement.getAttribute('data-theme') || 'light') === 'light' ? 'dark' : 'light';
             setTheme(newTheme);
         });
 
-        // GitHub OAuth login
-        const githubLoginBtn = document.getElementById('githubLoginBtn');
-        const errorMessage = document.getElementById('errorMessage');
-
-        // GitHub OAuth configuration - will be loaded from API
-        let GITHUB_CLIENT_ID = '';
-        let REDIRECT_URI = '';
-        const SCOPES = 'repo user:email read:user';  // Full repo access
-        
-        // Load configuration from API
-        async function loadConfig() {
-            try {
-                console.log('Loading configuration from /api/config...');
-                
-                const response = await fetch('/api/config', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Cache-Control': 'no-cache'
-                    },
-                    cache: 'no-cache'
-                });
-                
-                console.log('Config response status:', response.status);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                
-                const config = await response.json();
-                console.log('Config loaded:', config);
-                
-                // Check if we got an error response
-                if (config.error) {
-                    throw new Error(config.message || config.error);
-                }
-                
-                // Check if we have the required configuration
-                if (!config.github_client_id) {
-                    const missingVars = config.missing_variables || ['GITHUB_CLIENT_ID'];
-                    throw new Error(`GitHub OAuth is not configured. Missing: ${missingVars.join(', ')}`);
-                }
-                
-                GITHUB_CLIENT_ID = config.github_client_id;
-                REDIRECT_URI = encodeURIComponent(window.location.origin + '/api/auth/github/callback');
-                
-                // Enable login button once config is loaded
-                document.getElementById('githubLoginBtn').disabled = false;
-                document.getElementById('githubLoginBtn').textContent = 'Continue with GitHub';
-                
-                // Hide any previous error messages
-                errorMessage.style.display = 'none';
-                
-                console.log('Configuration loaded successfully');
-                
-            } catch (error) {
-                console.error('Failed to load configuration:', error);
-                
-                // Show specific error message
-                let errorMsg = 'Failed to load application configuration. ';
-                
-                if (error.message.includes('GitHub OAuth') || error.message.includes('Missing:')) {
-                    errorMsg = error.message + '\n\nPlease contact the administrator to configure the environment variables.';
-                } else if (error.message.includes('Failed to fetch') || error.message.includes('HTTP 500')) {
-                    errorMsg += 'Server is not responding. Please try again later or contact support.';
-                } else if (error.message.includes('HTTP 404')) {
-                    errorMsg += 'Configuration endpoint not found. The application may need to be redeployed.';
-                } else {
-                    errorMsg += error.message;
-                }
-                
-                errorMessage.textContent = errorMsg;
-                errorMessage.style.display = 'block';
-                
-                // Keep login button disabled but show retry option
-                const loginBtn = document.getElementById('githubLoginBtn');
-                loginBtn.disabled = true;
-                loginBtn.textContent = 'Configuration Error';
-                
-                // Add retry button
-                if (!document.getElementById('retryConfigBtn')) {
-                    const retryBtn = document.createElement('button');
-                    retryBtn.id = 'retryConfigBtn';
-                    retryBtn.className = 'btn btn-secondary';
-                    retryBtn.style.marginTop = '10px';
-                    retryBtn.textContent = 'Retry Configuration';
-                    retryBtn.onclick = () => {
-                        retryBtn.remove();
-                        loadConfig();
-                    };
-                    loginBtn.parentNode.appendChild(retryBtn);
-                }
-            }
-        }
-
-        githubLoginBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            
-            // Ensure configuration is loaded
-            if (!GITHUB_CLIENT_ID) {
-                errorMessage.textContent = 'Configuration not loaded. Please refresh the page or click "Retry Configuration" above.';
-                errorMessage.style.display = 'block';
-                return;
-            }
-            
-            // Add loading state
-            githubLoginBtn.classList.add('loading');
-            githubLoginBtn.textContent = 'Redirecting to GitHub...';
-            
-            // Hide any previous errors
-            errorMessage.style.display = 'none';
-            
-            // Generate state parameter for security
-            const state = generateRandomString(32);
-            localStorage.setItem('oauth_state', state);
-            
-            // Construct GitHub OAuth URL
-            const githubAuthUrl = `https://github.com/login/oauth/authorize?` +
-                `client_id=${GITHUB_CLIENT_ID}&` +
-                `redirect_uri=${REDIRECT_URI}&` +
-                `scope=${SCOPES}&` +
-                `state=${state}&` +
-                `allow_signup=true`;
-            
-            // Redirect to GitHub OAuth
-            window.location.href = githubAuthUrl;
-        });
-
-        // Handle OAuth callback
-        function handleOAuthCallback() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            const state = urlParams.get('state');
-            const error = urlParams.get('error');
-            
-            if (error) {
-                showError('GitHub authentication failed: ' + error);
-                return;
-            }
-            
-            if (!code || !state) {
-                return; // Not an OAuth callback
-            }
-            
-            // Verify state parameter
-            const savedState = localStorage.getItem('oauth_state');
-            if (state !== savedState) {
-                showError('Invalid state parameter. Please try again.');
-                return;
-            }
-            
-            // Clean up state
-            localStorage.removeItem('oauth_state');
-            
-            // Exchange code for access token
-            exchangeCodeForToken(code);
-        }
-
-        async function exchangeCodeForToken(code) {
-            try {
-                githubLoginBtn.classList.add('loading');
-                
-                // In a real implementation, this should be done on your backend
-                // to keep the client secret secure
-                const response = await fetch('/auth/github/callback', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ code }),
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to authenticate with GitHub');
-                }
-                
-                const data = await response.json();
-                
-                // Store the access token securely (consider using httpOnly cookies)
-                localStorage.setItem('github_token', data.access_token);
-                localStorage.setItem('github_user', JSON.stringify(data.user));
-                
-                // Redirect to main application
-                window.location.href = '/';
-                
-            } catch (error) {
-                console.error('OAuth error:', error);
-                showError('Authentication failed. Please try again.');
-                githubLoginBtn.classList.remove('loading');
-            }
-        }
-
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-        }
-
-        function generateRandomString(length) {
-            const array = new Uint8Array(length);
-            crypto.getRandomValues(array);
-            return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-        }
-
-        // Check if user is already logged in
-        function checkAuthStatus() {
-            const token = localStorage.getItem('github_token');
-            if (token) {
-                // Verify token is still valid
-                fetch('https://api.github.com/user', {
-                    headers: {
-                        'Authorization': `token ${token}`,
-                    },
-                })
-                .then(response => {
-                    if (response.ok) {
-                        // User is already authenticated, redirect to main app
-                        window.location.href = '/';
-                    } else {
-                        // Token is invalid, clear it
-                        localStorage.removeItem('github_token');
-                        localStorage.removeItem('github_user');
-                    }
-                })
-                .catch(() => {
-                    // Network error, assume token might be valid and let main app handle it
-                });
-            }
-        }
-
-        // Initialize
+        // Display error message from URL query parameter if present
         document.addEventListener('DOMContentLoaded', () => {
-            // Disable login button until config is loaded
-            const loginBtn = document.getElementById('githubLoginBtn');
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Loading Configuration...';
-            
-            // Load configuration
-            loadConfig();
-            
-            // Check if this is an OAuth callback
-            if (window.location.pathname === '/auth/callback') {
-                handleOAuthCallback();
-            } else {
-                // Check if user is already authenticated
-                checkAuthStatus();
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            if (error) {
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = decodeURIComponent(error);
+                errorMessage.style.display = 'block';
+                // Clean the URL
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
         });
     </script>
