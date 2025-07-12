@@ -123,7 +123,7 @@ class handler(BaseHTTPRequestHandler):
             
             # Redirect to frontend with success
             self.send_response(302)
-            self.send_header('Location', '/frontend/index.html')
+            self.send_header('Location', '/')
             self.send_header('Set-Cookie', f'auth_token={jwt_token}; {cookie_flags}')
             self.send_header('Set-Cookie', f'oauth_state=; HttpOnly; SameSite=Lax; Max-Age=0; Path=/')  # Clear state
             self.end_headers()
