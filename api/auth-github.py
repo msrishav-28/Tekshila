@@ -74,13 +74,17 @@ class handler(BaseHTTPRequestHandler):
     def handle_callback(self):
         """Handle GitHub OAuth callback"""
         try:
+            print('GitHub OAuth callback triggered')
             # Parse query parameters
             parsed_url = urllib.parse.urlparse(self.path)
+            print(f'Callback URL: {self.path}')
             params = urllib.parse.parse_qs(parsed_url.query)
+            print(f'Parsed params: {params}')
             
             code = params.get('code', [None])[0]
             state = params.get('state', [None])[0]
             error = params.get('error', [None])[0]
+            print(f'code: {code}, state: {state}, error: {error}')
             
             # Check for errors
             if error:
@@ -89,6 +93,7 @@ class handler(BaseHTTPRequestHandler):
             
             # Verify state parameter
             cookies = self.parse_cookies()
+            print(f'Parsed cookies: {cookies}')
             stored_state = cookies.get('oauth_state')
             
             if not state or state != stored_state:
@@ -100,28 +105,36 @@ class handler(BaseHTTPRequestHandler):
                 return
             
             # Exchange code for token
+            print('Exchanging code for token...')
             token_data = self.exchange_code_for_token(code)
+            print(f'Token data: {token_data}')
             
             # Get user data
+            print('Getting GitHub user data...')
             user_data = self.get_github_user(token_data['access_token'])
+            print(f'User data: {user_data}')
             
             # Create JWT token for session
+            print('Creating JWT token...')
             jwt_token = self.create_jwt_token({
                 'github_token': token_data['access_token'],
                 'user': user_data,
                 'exp': datetime.utcnow() + timedelta(hours=24)
             })
+            print(f'JWT token: {jwt_token}')
             
             # Determine if we're in production (HTTPS) or development
             host = self.headers.get('host', '')
+            print(f'Host: {host}')
             is_production = 'vercel.app' in host or 'herokuapp.com' in host
+            print(f'Is production: {is_production}')
             
             # Set cookie with appropriate security settings
-            cookie_flags = 'HttpOnly; SameSite=Lax; Max-Age=86400; Path=/'
-            if is_production:
-                cookie_flags += '; Secure'
+            cookie_flags = 'HttpOnly; SameSite=None; Secure; Max-Age=86400; Path=/'
+            print(f'Cookie flags: {cookie_flags}')
             
             # Send HTML page with JS redirect after setting cookie
+            print('Sending HTML response with JS redirect...')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
             self.send_header('Set-Cookie', f'auth_token={jwt_token}; {cookie_flags}')
@@ -146,6 +159,7 @@ class handler(BaseHTTPRequestHandler):
 '''.encode())
             
         except Exception as e:
+            print(f'Exception in handle_callback: {e}')
             self.redirect_with_error(f"Authentication failed: {str(e)}")
     
     def handle_get_user(self):
