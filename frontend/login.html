@@ -357,6 +357,14 @@
     </div>
 
     <script>
+        // Check if the user is already logged in by looking for the auth_token cookie
+        const token = document.cookie.split(';').find(row => row.trim().startsWith('auth_token='));
+
+        // If the token exists, redirect to the main application page
+        if (token) {
+            window.location.href = '/main.html';
+        }
+
         // Theme management
         const themeToggle = document.getElementById('themeToggle');
         const savedTheme = localStorage.getItem('theme') || 'light';
