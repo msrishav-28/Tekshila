@@ -160,10 +160,4 @@ To extend the application:
 3. **AI Logic**: Update `core.py` and `code_quality.py` for AI functionality
 4. **GitHub Features**: Extend `github_integration.py` for more GitHub operations
 
-## �📃 License
-
-This project is licensed under the terms of the MIT License. See [LICENSE](./LICENSE) for details.
-
-## 🙌 Contributing
-
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
