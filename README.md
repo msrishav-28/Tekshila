@@ -1,25 +1,25 @@
-# 🧠 Tekshila
+# Tekshila
 
 Tekshila is an AI-powered application that generates technical documentation (like README files) and adds contextual comments to source code. It features a modern web frontend built with Vite and a FastAPI backend, with GitHub integration for creating pull requests and AI-driven code quality analysis.
 
-## 🚀 Features
+## Features
 
-- 📄 **README Generator**: Automatically generate detailed README files from your codebase.
-- 💬 **Code Commenting**: Add helpful and contextual comments to source code.
-- 🧪 **Code Quality Analysis**: Identify code smells, security issues, performance bottlenecks, and best practices.
-- 🔄 **GitHub Integration**: Create pull requests directly with your documentation or annotated code.
-- 🌐 **Modern Web Interface**: Clean, responsive frontend built with Vite.
-- 🚀 **FastAPI Backend**: High-performance REST API backend.
-- 🧠 Powered by **Gemini API** for intelligent and language-aware code processing.
+- **README Generator**: Automatically generate detailed README files from your codebase.
+- **Code Commenting**: Add helpful and contextual comments to source code.
+- **Code Quality Analysis**: Identify code smells, security issues, performance bottlenecks, and best practices.
+- **GitHub Integration**: Create pull requests directly with your documentation or annotated code.
+- **Modern Web Interface**: Clean, responsive frontend built with Vite.
+- **FastAPI Backend**: High-performance REST API backend.
+- Powered by **Gemini API** for intelligent and language-aware code processing.
 
-## 🏗️ Architecture
+## Architecture
 
 - **Frontend**: Modern web interface (Vite + Vanilla JS)
 - **Backend**: FastAPI REST API server
 - **AI Engine**: Google Gemini API for code analysis and generation
 - **Version Control**: GitHub API integration
 
-## 📦 Installation
+## Installation
 
 1. **Clone the repository**:
    ```bash
@@ -51,7 +51,7 @@ Tekshila is an AI-powered application that generates technical documentation (li
    API_BASE_URL=http://localhost:8000
    ```
 
-## 🖥️ Usage
+## Usage
 
 ### Option 1: Run Both Servers Together
 ```bash
@@ -77,14 +77,14 @@ npm run build
 npm run start:prod
 ```
 
-## 🌐 Access Points
+## Access Points
 
 - **Frontend**: http://localhost:3000
 - **API Backend**: http://localhost:8000
 - **API Documentation**: http://localhost:8000/docs
 - **API Health Check**: http://localhost:8000/health
 
-## 🎯 Main Features:
+## Main Features:
 
 1. **Generate Documentation**:
    - Upload one or more code files (or a ZIP).
@@ -100,16 +100,16 @@ npm run start:prod
 3. **Code Quality Analysis**:
    - Upload a file to receive detailed analysis and improvement suggestions from the AI.
 
-## 🧠 Gemini API Integration
+## Gemini API Integration
 
 The app uses Gemini's large language model to analyze and understand code. Ensure you set up your API key and endpoint in the `.env` file.
 
-## 🔐 GitHub Integration
+## GitHub Integration
 
 - Tekshila uses [PyGithub](https://pygithub.readthedocs.io/) for GitHub operations.
 - Your personal access token should have `repo` scope to allow for PR creation.
 
-## 📂 Project Structure
+## Project Structure
 
 ```bash
 .
@@ -129,7 +129,7 @@ The app uses Gemini's large language model to analyze and understand code. Ensur
 └── LICENSE
 ```
 
-## � API Endpoints
+## API Endpoints
 
 ### Documentation
 - `POST /api/generate-docs` - Generate documentation from code files
@@ -151,7 +151,7 @@ The app uses Gemini's large language model to analyze and understand code. Ensur
 - `GET /api/supported-files` - Get supported file types
 - `GET /docs` - API documentation (Swagger UI)
 
-## 🔧 Development
+## Development
 
 To extend the application:
 

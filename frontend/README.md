@@ -4,12 +4,12 @@ A modern, responsive web interface for Tekshila - the AI-powered code documentat
 
 ## Features
 
-- 🎨 **Modern UI/UX**: Clean, intuitive interface with smooth animations
-- 📱 **Responsive Design**: Works perfectly on desktop, tablet, and mobile
-- 🚀 **Fast Performance**: Optimized for speed and efficiency
-- 🎯 **Drag & Drop**: Easy file uploads with drag and drop support
-- 🔄 **Real-time Updates**: Live preview of generated documentation
-- 🌙 **Professional Theme**: Apple-inspired design aesthetics
+- **Modern UI/UX**: Clean, intuitive interface with smooth animations
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
+- **Fast Performance**: Optimized for speed and efficiency
+- **Drag & Drop**: Easy file uploads with drag and drop support
+- **Real-time Updates**: Live preview of generated documentation
+- **Professional Theme**: Apple-inspired design aesthetics
 
 ## Quick Start
 
@@ -87,7 +87,7 @@ const API_CONFIG = {
 
 ## Features Overview
 
-### 📄 Documentation Generation
+### Documentation Generation
 - Upload single or multiple files
 - Support for 20+ programming languages
 - Choose between README generation or code commenting
@@ -95,13 +95,13 @@ const API_CONFIG = {
 - Live preview with syntax highlighting
 - Download generated documentation
 
-### 🔗 GitHub Integration
+### GitHub Integration
 - Secure token-based authentication
 - Repository and branch selection
 - Automatic pull request creation
 - Customizable PR titles and descriptions
 
-### 🔍 Code Quality Analysis
+### Code Quality Analysis
 - AI-powered code analysis
 - Issue detection and categorization
 - Performance and security suggestions
