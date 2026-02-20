@@ -95,8 +95,26 @@ app.add_middleware(GZipMiddleware, minimum_size=1000)
 async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: AsyncSession = Depends(get_db)
-) -> User:
-    """Dependency to get current authenticated user"""
+) -> Optional[User]:
+    """
+    Dependency to get current authenticated user.
+    If DB is unavailable, returns a mock user or raises 503 depending on configuration.
+    For now, we'll fail gracefully if DB is missing.
+    """
+    if db is None:
+        # DB is unavailable. We cannot authenticate.
+        # Option 1: Raise 503 (Strict)
+        # raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Database unavailable")
+        
+        # Option 2: Allow guests (Relaxed - for limited functionality)
+        # return None
+        
+        # Going with strict for security, but with clear message
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE, 
+            detail="Database unavailable. Authentication disabled."
+        )
+
     if not credentials:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -113,10 +131,14 @@ async def get_current_user(
         )
     
     # Fetch user from database
-    result = await db.execute(
-        select(User).where(User.id == token_data.user_id)
-    )
-    user = result.scalar_one_or_none()
+    try:
+        result = await db.execute(
+            select(User).where(User.id == token_data.user_id)
+        )
+        user = result.scalar_one_or_none()
+    except Exception as e:
+        logger.error(f"DB Error checking user: {e}")
+        raise HTTPException(status_code=503, detail="Database error")
     
     if not user or not user.is_active:
         raise HTTPException(
@@ -130,6 +152,9 @@ async def get_current_active_user(
     current_user: User = Depends(get_current_user)
 ) -> User:
     """Dependency to ensure user is active"""
+    if not current_user:
+         raise HTTPException(status_code=401, detail="Not authenticated")
+         
     if not current_user.is_active:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -144,9 +169,14 @@ async def get_current_active_user(
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
+    # Check DB connection status
+    from db.connection import engine
+    db_status = "connected" if engine else "disconnected"
+    
     return {
         "status": "healthy",
         "version": "3.0.0",
+        "database": db_status,
         "timestamp": datetime.utcnow().isoformat()
     }
 
