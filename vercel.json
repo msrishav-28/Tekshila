@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+        {
+            "source": "/api/:path*",
+            "destination": "https://tekshila-api.onrender.com/api/:path*"
+        },
+        {
+            "source": "/auth/:path*",
+            "destination": "https://tekshila-api.onrender.com/auth/:path*"
+        }
+    ]
+}
